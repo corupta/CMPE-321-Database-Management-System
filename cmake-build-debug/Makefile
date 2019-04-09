@@ -123,6 +123,33 @@ cmpe_321_dbms/fast:
 	$(MAKE) -f CMakeFiles/cmpe_321_dbms.dir/build.make CMakeFiles/cmpe_321_dbms.dir/build
 .PHONY : cmpe_321_dbms/fast
 
+src/Helpers.o: src/Helpers.cpp.o
+
+.PHONY : src/Helpers.o
+
+# target to build an object file
+src/Helpers.cpp.o:
+	$(MAKE) -f CMakeFiles/cmpe_321_dbms.dir/build.make CMakeFiles/cmpe_321_dbms.dir/src/Helpers.cpp.o
+.PHONY : src/Helpers.cpp.o
+
+src/Helpers.i: src/Helpers.cpp.i
+
+.PHONY : src/Helpers.i
+
+# target to preprocess a source file
+src/Helpers.cpp.i:
+	$(MAKE) -f CMakeFiles/cmpe_321_dbms.dir/build.make CMakeFiles/cmpe_321_dbms.dir/src/Helpers.cpp.i
+.PHONY : src/Helpers.cpp.i
+
+src/Helpers.s: src/Helpers.cpp.s
+
+.PHONY : src/Helpers.s
+
+# target to generate assembly for a file
+src/Helpers.cpp.s:
+	$(MAKE) -f CMakeFiles/cmpe_321_dbms.dir/build.make CMakeFiles/cmpe_321_dbms.dir/src/Helpers.cpp.s
+.PHONY : src/Helpers.cpp.s
+
 src/RWHandler.o: src/RWHandler.cpp.o
 
 .PHONY : src/RWHandler.o
@@ -267,6 +294,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... cmpe_321_dbms"
+	@echo "... src/Helpers.o"
+	@echo "... src/Helpers.i"
+	@echo "... src/Helpers.s"
 	@echo "... src/RWHandler.o"
 	@echo "... src/RWHandler.i"
 	@echo "... src/RWHandler.s"

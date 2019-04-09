@@ -6,29 +6,20 @@
 
 
 SystemCatalog::SystemCatalog() {
-    RWHandler::openFile(catalogFile, "SystemCatalog.txt");
-    std::cerr << "Read sys cat" << std::endl;
-    if (!catalogFile) {
-        std::cerr << "popopo" << std::endl;
-    }
-    catalogFile.seekg(0, catalogFile.end);
-    long long length = catalogFile.tellg();
-    catalogFile.seekg(0, catalogFile.beg);
-    if (length < 4) {
-        catalogFile.seekp(0, catalogFile.beg);
+    if (Helpers::openFile(catalogFile, "SystemCatalog.txt")) {
+        // NEW FILE
         tableCount = 0;
-        catalogFile.write((char *) &tableCount, sizeof(tableCount));
-        catalogFile.seekg(0, catalogFile.beg);
+        Helpers::write(catalogFile, &tableCount, sizeof(tableCount));
+    } else {
+        // OLD FILE
+        Helpers::read(catalogFile, &tableCount, sizeof(tableCount));
     }
-    catalogFile.read((char *) &tableCount, sizeof(tableCount));
-    if(!catalogFile) std:: cerr << "dipC" << std::endl;
+
     // table numbers start from 1
     for (unsigned int i = 1; i <= tableCount; ++i) {
         Scheme* scheme = Scheme::read(catalogFile);
-        if(!catalogFile) std:: cerr << "dipB" << std::endl;
         schemes[scheme->name] = scheme;
     }
-    if(!catalogFile) std:: cerr << "dipA" << std::endl;
 }
 
 bool SystemCatalog::createType(std::string name, std::vector<std::string> fields) {
@@ -38,27 +29,20 @@ bool SystemCatalog::createType(std::string name, std::vector<std::string> fields
         delete schemes[name];
     } else {
         ++tableCount;
-        catalogFile.seekp(0);
-        catalogFile.write((char *)&tableCount, sizeof(tableCount));
-    }
-    if (!catalogFile) {
-        std::cerr << "not even here?" << std::endl;
+        Helpers::seekWritePos(catalogFile, 0);
+        Helpers::write(catalogFile, &tableCount, sizeof(tableCount));
     }
     schemes[name] = new Scheme(name, fields, catalogPosition);
     schemes[name]->write(catalogFile);
-    catalogFile.flush();
     return true;
 }
 
 bool SystemCatalog::deleteType(std::string name) {
     if (schemes[name]) {
-        schemes[name]->status = 0;
+        schemes[name]->deleted = true;
         schemes[name]->write(catalogFile);
-        std::string dataPath = "data/" + name + ".table.txt";
-        std::remove(dataPath.c_str());
-        std::string indexPath = "data/" + name + ".index.txt";
-        std::remove(indexPath.c_str());
-        catalogFile.flush();
+        Helpers::removeFile("data/" + name + ".table.txt");
+        Helpers::removeFile("data/" + name + ".index.txt");
         return true;
     }
     return false;
@@ -68,7 +52,7 @@ std::vector<std::string> SystemCatalog::listType() {
     std::vector<std::string> res;
     for (auto it = schemes.begin(); it != schemes.end(); ++it) {
         Scheme* scheme = it->second;
-        if (scheme->status) {
+        if (!scheme->deleted) {
             res.push_back(scheme->name);
         }
     }
@@ -88,6 +72,12 @@ Scheme* SystemCatalog::getScheme(std::string name) {
 SystemCatalog::~SystemCatalog() {
     for (auto it = schemes.begin(); it != schemes.end(); ++it) {
         delete it->second;
+#ifdef DEBUG
+        if (it->second) {
+            Helpers::logError("~SystemCatalog") << "it->second = " << (long long)it->second << std::endl;
+            delete it->second;
+        }
+#endif
     }
     schemes.clear();
 }

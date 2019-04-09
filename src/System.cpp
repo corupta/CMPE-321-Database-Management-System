@@ -131,7 +131,9 @@ void System::run(std::istream &input, std::ostream &output) {
         } else {
             std::cerr << "unknown scope, must be (type|record)" << std::endl;
         }
-        // std::cerr << "Expections: " << std::strerror(errno) << std::endl;
+#ifdef DEBUG
+        std::cerr << "Done." << std::endl;
+#endif
         input >> operation;
     }
 }

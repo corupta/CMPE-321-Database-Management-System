@@ -6,13 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.cpp
-RWHandler.h
-/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h
+string
+-
+fstream
+-
+iostream
+-
 
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
 Scheme.h
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
+Helpers.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h
 string
 -
 fstream
@@ -25,4 +31,30 @@ fstream
 -
 iostream
 -
+Helpers.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/System.cpp
+System.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/System.h
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/System.h
+SystemCatalog.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/SystemCatalog.h
+RWHandler.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/SystemCatalog.h
+fstream
+-
+map
+-
+string
+-
+cstdio
+-
+vector
+-
+Scheme.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
 

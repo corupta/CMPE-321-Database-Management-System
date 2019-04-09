@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/cmpe_321_dbms.dir/src/RWHandler.cpp.o"
   "CMakeFiles/cmpe_321_dbms.dir/src/Scheme.cpp.o"
   "CMakeFiles/cmpe_321_dbms.dir/src/System.cpp.o"
+  "CMakeFiles/cmpe_321_dbms.dir/src/Helpers.cpp.o"
   "cmpe_321_dbms.pdb"
   "cmpe_321_dbms"
 )

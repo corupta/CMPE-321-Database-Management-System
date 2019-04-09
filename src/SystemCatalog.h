@@ -11,7 +11,6 @@
 #include <cstdio>
 #include <vector>
 #include "Scheme.h"
-#include "RWHandler.h"
 
 class SystemCatalog {
     unsigned int tableCount;

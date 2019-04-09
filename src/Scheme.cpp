@@ -5,33 +5,33 @@
 #include "Scheme.h"
 
 
-Scheme::Scheme(char schemeDefinition[64], unsigned long long catalogPosition) : status(schemeDefinition[0])
-, name(schemeDefinition), recordSize(1), catalogPosition(catalogPosition) {
-    int fieldCount = (int) schemeDefinition[9];
-    for (int i = 0; i < fieldCount; ++i) {
-        this -> fields.push_back(schemeDefinition + (9*i + 10));
-        this -> recordSize += 8;
-    }
-}
-
 Scheme::Scheme(std::string name, std::vector<std::string> fields, unsigned long long catalogPosition) :
-status(name[0]), name(name), fields(fields), catalogPosition(catalogPosition) {
-    status = name[0];
+fields(fields), catalogPosition(catalogPosition), deleted(false) {
+    if (name[0] & (1 << 7)) {
+        // this means the scheme is deleted
+        deleted = true;
+        name[0] &= 0x7F;
+    }
+    this->name = name;
     recordSize = 1 + (int)fields.size() * 8;
 }
 
 Scheme* Scheme::read(std::fstream &inp) {
-    char schemeDefinition[64];
+    unsigned long long catalogPosition = Helpers::tellReadPos(inp);
 
-    if(!inp) std:: cerr << "dipZ" << std::endl;
-    unsigned long long catalogPosition = inp.tellg();
+    std::vector<std::string> fields;
+    std::string name;
 
-    if(!inp) std:: cerr << "dipQ" << std::endl;
-    inp.read((char *) &schemeDefinition[0], sizeof(schemeDefinition));
+    char buffer[9], fieldCount;
 
-
-    if(!inp) std:: cerr << "dipW" << inp.rdstate() << inp.good() << inp.bad() << inp.fail() << inp.eof() << std::endl;
-    return new Scheme(schemeDefinition, catalogPosition);
+    Helpers::read(inp, buffer, sizeof(buffer));
+    name = Helpers::readString(buffer, 9);
+    Helpers::read(inp, &fieldCount, sizeof(fieldCount));
+    for (int i = 0; i < fieldCount; ++i) {
+        Helpers::read(inp, buffer, sizeof(buffer));
+        fields.push_back(Helpers::readString(buffer, 9));
+    }
+    return new Scheme(name, fields, catalogPosition);
 }
 
 void Scheme::write(std::fstream &out) {
@@ -40,8 +40,8 @@ void Scheme::write(std::fstream &out) {
     for (int i = 0; i < this -> name.length(); ++i) {
         schemeDefinition[i] = name[i];
     }
-    if (this->status == 0) {
-        schemeDefinition[0] = 0;
+    if (deleted) {
+        schemeDefinition[0] |= (1<<7);
     }
     schemeDefinition[9] = (char)this->fields.size();
     for (int i = 0; i < this-> fields.size(); ++i) {
@@ -49,14 +49,8 @@ void Scheme::write(std::fstream &out) {
             schemeDefinition[9*i + 10 + j] = this->fields[i][j];
         }
     }
-    if (!out) {
-        std::cerr << "out not set??" << std::endl;
-    }
-    out.seekp(catalogPosition, std::ios::beg);
-    out.write(&schemeDefinition[0], sizeof(schemeDefinition));
-    if (!out) {
-        std::cerr << "out is broken" << std::endl;
-    }
+    Helpers::seekWritePos(out, catalogPosition);
+    Helpers::write(out, schemeDefinition, sizeof(schemeDefinition));
 }
 
 int Scheme::getRecordSize() {

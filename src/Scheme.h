@@ -8,15 +8,15 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include "Helpers.h"
 
 class Scheme {
     int recordSize;
 public:
     unsigned long long catalogPosition;
-    char status; // 0 means deleted
+    bool deleted; // 0 means deleted
     std::string name;
     std::vector<std::string> fields;
-    explicit Scheme(char schemeDefinition[64], unsigned long long catalogPosition);
     Scheme(std::string name, std::vector<std::string> fields, unsigned long long catalogPosition);
     static Scheme* read(std::fstream& inp);
     void write(std::fstream& out);

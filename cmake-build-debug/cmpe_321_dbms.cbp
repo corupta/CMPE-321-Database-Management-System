@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.cpp">
+			<Option target="cmpe_321_dbms"/>
+		</Unit>
+		<Unit filename="/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h">
+			<Option target="cmpe_321_dbms"/>
+		</Unit>
 		<Unit filename="/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.cpp">
 			<Option target="cmpe_321_dbms"/>
 		</Unit>

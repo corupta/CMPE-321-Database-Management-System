@@ -6,6 +6,7 @@
 #define CMPE_321_DBMS_RWHANDLER_H
 
 #include "Scheme.h"
+#include "Helpers.h"
 #include <string>
 #include <fstream>
 
@@ -25,9 +26,8 @@ public:
     bool deleteRecord(const long long& primaryKey);
     bool createRecord(std::vector<long long> fields);
     std::vector<std::vector<long long> > listRecord();
-    RWHandler(Scheme* scheme);
+    explicit RWHandler(Scheme* scheme);
     ~RWHandler();
-    static void openFile(std::fstream &stream, std::string path);
 };
 
 

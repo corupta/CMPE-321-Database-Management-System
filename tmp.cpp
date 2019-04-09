@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+void sizer(char ptr[]) {
+    cout << "ptr size: " << sizeof(ptr) << endl;
+}
 int main() {
   fstream mystream;
   mystream.open("hello.txt", ios::in | ios::binary | ios::out);
@@ -22,5 +26,7 @@ int main() {
 
     mystream.seekp((unsigned long long)40);
     mystream.write(x, sizeof(x));
+    sizer(x);
+    cout << "real size: " << sizeof(x) << endl;
 
 }
