@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.cpp
+RWHandler.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
+Scheme.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
+string
+-
+fstream
+-
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
+vector
+-
+fstream
+-
+iostream
+-
+
