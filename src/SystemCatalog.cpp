@@ -26,6 +26,9 @@ bool SystemCatalog::createType(std::string name, std::vector<std::string> fields
     unsigned long long catalogPosition = 4 + tableCount * Scheme::binarySize;
     if (schemes[name]) {
         catalogPosition = schemes[name]->catalogPosition;
+        if (!schemes[name]->deleted) {
+            return false;
+        }
         delete schemes[name];
     } else {
         ++tableCount;
@@ -39,11 +42,13 @@ bool SystemCatalog::createType(std::string name, std::vector<std::string> fields
 
 bool SystemCatalog::deleteType(std::string name) {
     if (schemes[name]) {
-        schemes[name]->deleted = true;
-        schemes[name]->write(catalogFile);
-        Helpers::removeFile("data/" + name + ".table.txt");
-        Helpers::removeFile("data/" + name + ".index.txt");
-        return true;
+        if (!schemes[name]->deleted) {
+            schemes[name]->deleted = true;
+            schemes[name]->write(catalogFile);
+            Helpers::removeFile(name + ".table.txt");
+            Helpers::removeFile(name + ".index.txt");
+            return true;
+        }
     }
     return false;
 }
@@ -72,12 +77,6 @@ Scheme* SystemCatalog::getScheme(std::string name) {
 SystemCatalog::~SystemCatalog() {
     for (auto it = schemes.begin(); it != schemes.end(); ++it) {
         delete it->second;
-#ifdef DEBUG
-        if (it->second) {
-            Helpers::logError("~SystemCatalog") << "it->second = " << (long long)it->second << std::endl;
-            delete it->second;
-        }
-#endif
     }
     schemes.clear();
 }

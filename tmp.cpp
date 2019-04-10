@@ -28,5 +28,9 @@ int main() {
     mystream.write(x, sizeof(x));
     sizer(x);
     cout << "real size: " << sizeof(x) << endl;
+    string tmp;
+    cout << "enter string" << endl;
+    cin >> tmp;
+    cout << "entered string: " << tmp << endl;
 
 }

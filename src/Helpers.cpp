@@ -56,7 +56,7 @@ void Helpers::seekReadPos(std::fstream &stream, unsigned long long position) {
     if (!stream) {
         logStreamStatus(stream, logError("seekReadPos") << "before seek");
     }
-#endif DEBUG
+#endif
     stream.seekg(position, ios::beg);
 #ifdef DEBUG
     if (!stream) {
@@ -99,7 +99,7 @@ void Helpers::incWritePos(std::fstream &stream, long long offset) {
         logStreamStatus(stream, logError("incWritePos") << "before inc");
     }
 #endif
-    stream.seekg(offset, ios::cur);
+    stream.seekp(offset, ios::cur);
 #ifdef DEBUG
     if (!stream) {
         logStreamStatus(stream, logError("incWritePos") << offset);

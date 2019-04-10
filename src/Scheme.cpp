@@ -31,11 +31,15 @@ Scheme* Scheme::read(std::fstream &inp) {
         Helpers::read(inp, buffer, sizeof(buffer));
         fields.push_back(Helpers::readString(buffer, 9));
     }
+
+    // move to the beginning of the next scheme
+    Helpers::incReadPos(inp, (binarySize - 10 - 9 * fieldCount));
+    // -9 for type name, -1 for fieldCount, -9 for each field name
     return new Scheme(name, fields, catalogPosition);
 }
 
 void Scheme::write(std::fstream &out) {
-    char schemeDefinition[64];
+    char schemeDefinition[binarySize];
     memset(schemeDefinition, 0, sizeof(schemeDefinition));
     for (int i = 0; i < this -> name.length(); ++i) {
         schemeDefinition[i] = name[i];

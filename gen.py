@@ -167,7 +167,7 @@ def generateMakeFile():
 		headerNameToPath[header['fileName']] = header['filePath']
 	for source in sourceFiles:
 		includePaths = map(lambda x: headerNameToPath[x], source['includes'])
-		makeFile.write(source['fileName'] + '.o:\t' +  " ".join(includePaths) + "\n")
+		makeFile.write(source['fileName'] + '.o:\t' +  source['filePath'] + " " + " ".join(includePaths) + "\n")
 		makeFile.write("\t\tg++ -c $(INCDIR) " + source['filePath'] + "\n\n")
 
 #checks system arguments, calls traverseFiles, and checkErrorsAndWarnings()

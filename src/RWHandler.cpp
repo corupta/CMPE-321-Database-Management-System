@@ -43,14 +43,16 @@ bool RWHandler::moveToRecord(const long long &primaryKey) {
         return false;
     }
     // pages start from 1
-    Helpers::seekReadPos(dataFile, 4 + (page - 1) * 1024 + 2);
-    // 1 for page header, +1 for del stat of record
-    Helpers::seekWritePos(dataFile, 4 + (page - 1) * 1024 + 1);
+    Helpers::seekReadPos(dataFile, 4 + (page - 1) * 1024);
+    unsigned char nofRecordsInPage;
+    Helpers::read(dataFile, &nofRecordsInPage, sizeof(nofRecordsInPage));
+    Helpers::incReadPos(dataFile, 1);
+    // +1 for del stat of record
     // 1 for page header
-    int nofRecordsPerPage = 1023 / scheme->getRecordSize();
-    for (int i = 0; i < nofRecordsPerPage; ++i) {
-        Helpers::incReadPos(dataFile, scheme->getRecordSize());
-        Helpers::incWritePos(dataFile, scheme->getRecordSize());
+    for (int i = 0; i < nofRecordsInPage; ++i) {
+        if (i > 0) {
+            Helpers::incReadPos(dataFile, scheme->getRecordSize());
+        }
         Helpers::read(dataFile, &pkey, sizeof(pkey));
         Helpers::incReadPos(dataFile, -sizeof(pkey));
         if (pkey == primaryKey) {
@@ -86,6 +88,8 @@ bool RWHandler::initNextRecord(const long long &primaryKey) {
     Helpers::incWritePos(dataFile, (nofRecordsInPage - 1) * scheme->getRecordSize());
 
     ++indexCount;
+    Helpers::seekWritePos(indexFile, 0);
+    Helpers::write(indexFile, &indexCount, sizeof(indexCount));
     Helpers::seekWritePos(indexFile, 4 + (indexCount - 1) * 12);
     Helpers::write(indexFile, &primaryKey, sizeof(primaryKey));
     Helpers::write(indexFile, &pageCount, sizeof(pageCount));
@@ -118,8 +122,8 @@ bool RWHandler::updateRecord(std::vector<long long> fields) {
         Helpers::read(dataFile, &deleted, sizeof(deleted));
         if (!deleted) {
             long long field;
-            Helpers::incWritePos(dataFile, 9);
-            // skip 1 for record del, 8 for primary key
+            Helpers::incWritePos(dataFile, 8);
+            // skip 8 for primary key
             for (int i = 1; i < scheme->fields.size(); ++i) {
                 field = fields[i];
                 Helpers::write(dataFile, &field, sizeof(field));
@@ -136,6 +140,8 @@ bool RWHandler::deleteRecord(const long long &primaryKey) {
         Helpers::read(dataFile, &deleted, sizeof(deleted));
         if (!deleted) {
             deleted = 1;
+            Helpers::incWritePos(dataFile, -sizeof(deleted));
+            // go back to deleted
             Helpers::write(dataFile, &deleted, sizeof(deleted));
             return true;
         }
@@ -170,13 +176,17 @@ std::vector<std::vector<long long> > RWHandler::listRecord() {
         Helpers::read(dataFile, &nofRecords, sizeof(nofRecords));
         // 1 byte page header
         for (int j = 0; j < nofRecords; ++j) {
-            std::vector<long long> record;
-            long long field;
-            for (int k = 0; k < scheme->fields.size(); ++k) {
-                Helpers::read(dataFile, &field, sizeof(field));
-                record.push_back(field);
+            char deleted;
+            Helpers::read(dataFile, &deleted, sizeof(deleted));
+            if (!deleted) {
+                std::vector<long long> record;
+                long long field;
+                for (int k = 0; k < scheme->fields.size(); ++k) {
+                    Helpers::read(dataFile, &field, sizeof(field));
+                    record.push_back(field);
+                }
+                res.push_back(record);
             }
-            res.push_back(record);
         }
     }
     sort(res.begin(), res.end(), compareRecord);

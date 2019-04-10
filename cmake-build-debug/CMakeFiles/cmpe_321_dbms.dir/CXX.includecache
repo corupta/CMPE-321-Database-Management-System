@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.cpp
+Helpers.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h
+
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/Helpers.h
 string
 -
@@ -13,6 +17,10 @@ fstream
 -
 iostream
 -
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.cpp
+RWHandler.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
 
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
 Scheme.h
@@ -23,6 +31,10 @@ string
 -
 fstream
 -
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.cpp
+Scheme.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
 
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
 vector
@@ -44,6 +56,10 @@ SystemCatalog.h
 RWHandler.h
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/RWHandler.h
 
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/SystemCatalog.cpp
+SystemCatalog.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/SystemCatalog.h
+
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/SystemCatalog.h
 fstream
 -
@@ -57,4 +73,12 @@ vector
 -
 Scheme.h
 /Users/corupta/CLionProjects/cmpe-321-dbms/src/Scheme.h
+
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/main.cpp
+iostream
+-
+fstream
+-
+System.h
+/Users/corupta/CLionProjects/cmpe-321-dbms/src/System.h
 
