@@ -31,3 +31,8 @@
 * #### main:
     Not a class, but the main function. Creates & validates the input/output streams from the program arguments.
     Creates a System class instance and starts it.
+    
+    
+## Important Note
+
+Although fstream handles the read / write pointers as the same single pointer, I've though otherwise and implemented separate functions for them. Yet, when I found about this situation I just fixed the duplicate changes of the pointers and used them as is when I fixed the problems within them.
